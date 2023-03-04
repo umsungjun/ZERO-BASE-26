@@ -1,6 +1,8 @@
 import "./App.css";
+import { generateRandomNumber } from "./random";
 
 function App() {
+  console.log(generateRandomNumber());
   return (
     <div className="App">
       <h1>숫자 야구 게임</h1> {/* title */}
