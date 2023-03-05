@@ -5,6 +5,7 @@ import { generateRandomNumber } from "./random";
 function App() {
   const [randomNumber, setRandomNumber] = useState(generateRandomNumber());
   const [answer, setAnswer] = useState("");
+  const [logs, setLogs] = useState([]);
 
   const handleAnswerChanged = (event) => {
     //input에 변경이 일어날때마다 event객체를 받음
@@ -41,6 +42,14 @@ function App() {
     );
     console.log(randomNumber, answers);
     console.log(strike, ball);
+
+    if (strike === 4) {
+      alert("축하합니다! 정답입니다!");
+      setLogs([...logs, `${answer} (축하합니다! 정답입니다!)`]);
+      return;
+    }
+    setLogs([...logs, `${answer} (strike: ${strike} ball: ${ball})`]); // 기존배열값을 유지해야하기 때문에 spread연산자를 통해서 배열안에 풀어주고
+    // <li>1234 (strike: 0, ball: 2)</li>
   };
 
   useEffect(() => {
@@ -57,9 +66,9 @@ function App() {
       </section>
       <h2>기록</h2>
       <ol>
-        <li>1234 (strike: 0, ball: 2)</li>
-        <li>1234 (strike: 1, ball: 1)</li>
-        <li>1234 (strike: 1, ball: 1)</li>
+        {logs.map((log, i) => {
+          return <li key={i}>{log}</li>;
+        })}
       </ol>
     </div>
   );
