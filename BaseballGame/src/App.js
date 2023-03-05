@@ -6,6 +6,7 @@ function App() {
   const [randomNumber, setRandomNumber] = useState(generateRandomNumber());
   const [answer, setAnswer] = useState("");
   const [logs, setLogs] = useState([]);
+  const [isSuccess, setIsSucess] = useState(false);
 
   const handleAnswerChanged = (event) => {
     //input에 변경이 일어날때마다 event객체를 받음
@@ -46,6 +47,7 @@ function App() {
     if (strike === 4) {
       alert("축하합니다! 정답입니다!");
       setLogs([...logs, `${answer} (축하합니다! 정답입니다!)`]);
+      setIsSucess(true);
       return;
     }
     setLogs([...logs, `${answer} (strike: ${strike} ball: ${ball})`]); // 기존배열값을 유지해야하기 때문에 spread연산자를 통해서 배열안에 풀어주고
@@ -56,18 +58,32 @@ function App() {
     console.log(randomNumber);
   }, [randomNumber]); // []안에 요소가 변경될 때마다 내부에 있는 콜백함수가 실행 됨
 
+  const HandleRetry = () => {
+    setRandomNumber(generateRandomNumber());
+    setAnswer("");
+    setLogs([]);
+    setIsSucess(false);
+  };
+
   return (
     <div className="App">
       <h1>숫자 야구 게임</h1> {/* title */}
-      <header className="header">{randomNumber}</header>
+      <header className="header">
+        {isSuccess ? `정답: ${answer}` : "----"}
+      </header>{" "}
+      {/* state값을 쓸때는 {}감싸지 않아도됨 */}
       <section>
         <input type="text" value={answer} onChange={handleAnswerChanged} />
-        <button onClick={handleSubmit}>맞춰보기</button>
+        {isSuccess ? (
+          <button onClick={HandleRetry}>다시하기</button>
+        ) : (
+          <button onClick={handleSubmit}>맞춰보기</button>
+        )}
       </section>
       <h2>기록</h2>
       <ol>
         {logs.map((log, i) => {
-          return <li key={i}>{log}</li>;
+          return <li key={`${log}_${i}`}>{log}</li>;
         })}
       </ol>
     </div>
