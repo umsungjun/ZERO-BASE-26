@@ -17,6 +17,24 @@ function App() {
     // 스트라이크, 볼, 정답 유뮤를 확인
     const answers = answer.split("").map((item) => Number(item)); // 들어온 문자열을 배열 형태로 변환 후 map을 통해서 Number형태로 변환
 
+    if (answers.some((number) => isNaN(number))) {
+      // some은 배열의 요소를 하나씩 순회하면서 하나라도 true가 나오면 return 됨
+      alert("숫자만 입력해주세요");
+      return;
+    }
+
+    if (answers.length !== 4) {
+      alert("4자리 숫자만 입력해주세요!");
+      return; // return 하지 않으면 아래 문장이 실행 됨
+    }
+    const isDuplicate = answers.some((number) => {
+      return answers.indexOf(number) !== answers.lastIndexOf(number);
+    });
+
+    if (isDuplicate) {
+      alert("중복된 숫자가 있습니다.");
+      return;
+    }
     const { strike, ball } = randomNumber.reduce(
       (prev, cur, index) => {
         // 같은 자리에 같은 수가 존재하면 스트라이크
@@ -73,7 +91,12 @@ function App() {
       </header>{" "}
       {/* state값을 쓸때는 {}감싸지 않아도됨 */}
       <section>
-        <input type="text" value={answer} onChange={handleAnswerChanged} />
+        <input
+          type="text"
+          value={answer}
+          onChange={handleAnswerChanged}
+          disabled={isSuccess} /* 성공이면 입력을 막음 */
+        />
         {isSuccess ? (
           <button onClick={HandleRetry}>다시하기</button>
         ) : (
