@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import { generateRandomNumber } from "./random";
 
 function App() {
   const [randomNumber, setRandomNumber] = useState(generateRandomNumber());
 
+  useEffect(() => {
+    console.log(randomNumber);
+  }, [randomNumber]); // []안에 요소가 변경될 때마다 내부에 있는 콜백함수가 실행 됨
   return (
     <div className="App">
       <h1>숫자 야구 게임</h1> {/* title */}
