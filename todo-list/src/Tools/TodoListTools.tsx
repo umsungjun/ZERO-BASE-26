@@ -3,25 +3,32 @@ import React from "react";
 import styles from "./TodoListTools.module.css";
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
+import { useTodoDispatch, useTodoState } from "../Todo/TodoProvider";
 
-interface TodoListToolsProps {
-  isAllChecked: boolean;
-  onToggleAllClick: () => void;
-  onRemoveAllClick: () => void;
-}
+export default function TodoListTools() {
+  const todoState = useTodoState();
+  const todoDispatch = useTodoDispatch();
 
-export default function TodoListTools(props: TodoListToolsProps) {
+  const isTodoAllChecked = () => {
+    return todoState.todos.every((todo) => todo.isChecked); // 하나라도 체크가 되어있다면 true
+  };
+
   const handleToggleAllClick = () => {
-    props.onToggleAllClick();
+    todoDispatch({
+      type: "allChecked",
+      payload: isTodoAllChecked(),
+    });
   };
 
   const handleRemoveAllClick = () => {
-    props.onRemoveAllClick();
+    todoDispatch({
+      type: "allRemove",
+    });
   };
 
   return (
     <section className={styles.container}>
-      {props.isAllChecked ? (
+      {isTodoAllChecked() ? (
         <button
           className={styles.button}
           style={{ color: "red" }}

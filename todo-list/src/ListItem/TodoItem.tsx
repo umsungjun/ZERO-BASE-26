@@ -2,22 +2,42 @@ import React from "react";
 
 import { BsCheckCircle } from "react-icons/bs";
 import { IoIosRemoveCircleOutline } from "react-icons/io";
+import { useTodoDispatch } from "../Todo/TodoProvider";
 import styles from "./TodoItem.module.css";
 
 interface TOdoItemProps {
   id: number;
   text: string;
   isChecked: boolean;
-  onToggleClick: (id: number) => void; // void는 return 값이 없다는 의미
-  onRemoveClick: (id: number) => void;
 }
 
 export default function TodoItem(props: TOdoItemProps) {
+  const todoDispatch = useTodoDispatch();
+  // const handleRemove = (id: number) => {
+  //   // console.log("remove", id);
+  //
+  //   });
+  // };
+  // const handleToggle = (id: number) => {
+  //   // console.log(newTodos);
+  //
+  // };
+
   const handleToggleClick = () => {
-    props.onToggleClick(props.id); // props로 받은 함수 onToggleClick에
+    todoDispatch({
+      type: "checked",
+      payload: {
+        id: props.id,
+      },
+    });
   };
   const handleRemoveClick = () => {
-    props.onRemoveClick(props.id);
+    todoDispatch({
+      type: "remove",
+      payload: {
+        id: props.id,
+      },
+    });
   };
   return (
     <li className={styles.container}>

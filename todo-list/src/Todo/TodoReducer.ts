@@ -6,12 +6,12 @@ export type TodoTypes = {
   isChecked: boolean;
 };
 
-type TodoStateType = {
+export type TodoStateType = {
   todos: TodoTypes[];
 };
 
 // add, remove, checked, allChecked, allRemove
-type TodoActionType =
+export type TodoActionType =
   | {
       type: "add";
       payload: {
