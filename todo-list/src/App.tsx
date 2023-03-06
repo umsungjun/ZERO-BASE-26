@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import "./App.css";
 import Divider from "./Divider/Divider";
 import TodoHeader from "./Header/TodoHeader";
@@ -15,6 +15,7 @@ export type TodoTypes = {
 
 function App() {
   const [text, setText] = useState("");
+  // const [inputState, inputDispatch] = useReducer()
   const [todos, setTodos] = useState<TodoTypes[]>([]);
 
   const handleTextChange = (text: string) => {
