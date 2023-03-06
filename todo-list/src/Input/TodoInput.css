@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+}
+
+.formContainer {
+  display: flex;
+  flex: 1;
+}
+
+.input {
+  flex: 1;
+  font-size: 20px;
+  padding: 12px;
+  border: 1px solid #c0c0c0;
+  border-radius: 4px 0px 0px 4px;
+}
+
+.enter {
+  font-size: 18px;
+  padding: 8px 16px;
+  background-color: #fff;
+  border: 1px solid #c0c0c0;
+  border-left: none;
+  border-radius: 0px 4px 4px 0px;
+  font-weight: bold;
+  cursor: pointer;
+}
