@@ -1,12 +1,13 @@
+import { BrowserRouter } from "react-router-dom";
 import PageHeader from "./Common/PageHeader";
-import PoketCardList from "./LIst/PoketCardList";
+import PageNavigator from "./PageNavigator";
 
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <PageHeader />
-      <PoketCardList />
-    </>
+      <PageNavigator />
+    </BrowserRouter>
   );
 }
 

@@ -1,11 +1,15 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { Link } from "react-router-dom";
 
 // 페이지 헤더 컴포넌트
 export default function PageHeader() {
   return (
     <Header>
-      <Title>Pokémon</Title>
+      <Title>
+        <Link to="/">Pokémon</Link>{" "}
+        {/* Link component는 랜더되면 a태그로 변함 */}
+      </Title>
       <Select>
         <option value="Official">Official</option>
         <option value="A">A</option>
