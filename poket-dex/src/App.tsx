@@ -1,26 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import PageHeader from "./Common/PageHeader";
+import PoketCardList from "./LIst/PoketCardList";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <PageHeader />
+      <PoketCardList />
+    </>
   );
 }
 
 export default App;
+
+// emotion 라이브러리 사용법
+// npm install --save @emotion/react
+// npm install --save @emotion/styled
