@@ -1,14 +1,18 @@
 import React from "react";
 import styled from "@emotion/styled";
 
+interface PoketNameChipProps {
+  name: string;
+}
+
 // poket몬 카드의 내용 component
-export default function PoketNameChip() {
+export default function PoketNameChip(props: PoketNameChipProps) {
   return (
     <Chip>
       <NumberChip>
         <Number>001</Number>
       </NumberChip>
-      <Text>이상해씨</Text>
+      <Text>{props.name}</Text>
     </Chip>
   );
 }
