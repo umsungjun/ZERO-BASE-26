@@ -50,7 +50,7 @@ interface PoketmonDetailResponseType {
   }[];
 }
 
-interface PoketmonDetailType {
+export interface PoketmonDetailType {
   id: number;
   weigth: number;
   height: number;
@@ -58,9 +58,7 @@ interface PoketmonDetailType {
   types: string[];
   images: {
     frontDefault: string;
-
-    dream_world: string;
-
+    dreamWorldFront: string;
     officialArtworkFront: string;
   };
   baseStats: {
@@ -73,7 +71,7 @@ export const fetchPoketmonDetail = async (
   name: string
 ): Promise<PoketmonDetailType> => {
   const poketmonDetailUrl = `https://pokeapi.co/api/v2/pokemon/${name}`;
-  const response = await remote.get<PoketmonDetailResponseType>(
+  const response = await remote.get<PoketmonDetailResponseType>( //axios를 통해서 데이터를 받을 때 type을 제네릭으로 줘야 함
     poketmonDetailUrl
   );
   const detail = response.data; // responsedata를 한번 감쌈
@@ -81,6 +79,20 @@ export const fetchPoketmonDetail = async (
   return {
     id: detail.id,
     name: detail.name,
-    height: detail.height,
+    height: detail.height / 10, // 미터 단위
+    weigth: detail.weigth / 10, // kg 단위
+    types: detail.types.map((item) => item.type.name),
+    images: {
+      frontDefault: detail.sprites.front_default,
+      dreamWorldFront: detail.sprites.other.dream_world.front_default,
+      officialArtworkFront:
+        detail.sprites.other["official-artwork"].front_default,
+    },
+    baseStats: detail.stats.map((item) => {
+      return {
+        name: item.stat.name,
+        value: item.base_stat,
+      };
+    }),
   };
 };

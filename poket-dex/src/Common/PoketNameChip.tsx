@@ -3,14 +3,32 @@ import styled from "@emotion/styled";
 
 interface PoketNameChipProps {
   name: string;
+  id: number; //포켓몬 number
 }
 
 // poket몬 카드의 내용 component
 export default function PoketNameChip(props: PoketNameChipProps) {
+  const renderNumber = (id: number) => {
+    const digits = 3; // 전체 자릿수
+    const numberString = id.toString();
+
+    if (numberString.length >= digits) {
+      return numberString;
+    }
+
+    let result = "";
+
+    for (let i = 0; i < digits - numberString.length; i++) {
+      result += "0";
+    }
+
+    return (result += id);
+  };
+
   return (
     <Chip>
       <NumberChip>
-        <Number>001</Number>
+        <Number>{renderNumber(props.id)}</Number>
       </NumberChip>
       <Text>{props.name}</Text>
     </Chip>

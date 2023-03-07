@@ -1,10 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 
 import PoketNameChip from "../Common/PoketNameChip";
 import PoketMarkChip from "../Common/PoketMarkChip";
-import { fetchPoketmonDetail } from "../Service/poketmonService";
+import {
+  fetchPoketmonDetail,
+  PoketmonDetailType,
+} from "../Service/poketmonService";
 
 interface PoketCardProps {
   name: string;
@@ -16,6 +19,7 @@ const TempImgUrl =
 // list의 card component
 export default function PoketCard(props: PoketCardProps) {
   const navigate = useNavigate();
+  const [poketmon, setPoketmon] = useState<PoketmonDetailType | null>(null);
 
   const handleClick = () => {
     navigate(`/poketmon/${props.name}`); //navigate를 props.name으로 한다.
@@ -24,16 +28,22 @@ export default function PoketCard(props: PoketCardProps) {
   useEffect(() => {
     (async () => {
       const detail = await fetchPoketmonDetail(props.name);
+      setPoketmon(detail);
     })();
   }, [props.name]);
+
+  if (!poketmon) {
+    // poketmon은 비동기 통신으로 값을 가져오는 것이기 때문에 null일 경우 예외처리를 해줘야 함
+    return null; //TODO 화면이 로딩 중 일때
+  }
   return (
     <Item onClick={handleClick}>
       {/* 카드를 클릭하면 */}
       <Header>
-        <PoketNameChip name={props.name} />
+        <PoketNameChip name={poketmon.name} id={poketmon.id} />
       </Header>
       <Body>
-        <Image src={TempImgUrl} alt="이상해씨 이미지" />
+        <Image src={poketmon.images.dreamWorldFront} alt={poketmon.name} />
       </Body>
       <Footer>
         <PoketMarkChip />
