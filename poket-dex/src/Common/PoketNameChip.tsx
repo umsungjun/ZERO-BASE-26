@@ -22,7 +22,7 @@ export default function PoketNameChip(props: PoketNameChipProps) {
       result += "0";
     }
 
-    return (result += id); //
+    return (result += id);
   };
 
   return (
