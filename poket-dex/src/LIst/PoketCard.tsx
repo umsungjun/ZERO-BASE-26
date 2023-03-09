@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 import PoketNameChip from "../Common/PoketNameChip";
 import PoketMarkChip from "../Common/PoketMarkChip";
+import { RootState } from "../Store";
 import {
   fetchPoketmonDetail,
   PoketmonDetailType,
@@ -18,15 +19,17 @@ interface PoketCardProps {
 // list의 card component
 export default function PoketCard(props: PoketCardProps) {
   const navigate = useNavigate();
+
   const [ref, { entry }] = useIntersectionObserver();
   const isVisible = entry && entry.isIntersecting;
 
   const [poketmon, setPoketmon] = useState<PoketmonDetailType | null>(null);
-
+  const type = useSelector((state: RootState) => state.imageType.type);
   const handleClick = () => {
     navigate(`/poketmon/${props.name}`); //navigate를 props.name으로 한다.
   };
-
+  console.log(poketmon);
+  console.log(type);
   useEffect(() => {
     if (!isVisible) {
       return;
@@ -66,7 +69,7 @@ export default function PoketCard(props: PoketCardProps) {
         />
       </Header>
       <Body>
-        <Image src={poketmon.images.dreamWorldFront} alt={poketmon.name} />
+        <Image src={poketmon.images[type]} alt={poketmon.name} />
       </Body>
       <Footer>
         <PoketMarkChip />

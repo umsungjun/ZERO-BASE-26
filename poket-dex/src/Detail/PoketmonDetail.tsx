@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 import styled from "@emotion/styled";
+import { RootState } from "../Store";
 import PoketMarkChip from "../Common/PoketMarkChip";
 import {
   fetchPoketmonDetail,
@@ -13,7 +14,7 @@ import { PoketmonImageSkeleton } from "../Common/PoketmonImageSkeleton";
 export default function PoketmonDetail() {
   const { name } = useParams(); //page navigator 지정된 명칭 path="/poketmon/:name"
   const [poketmon, setPoketmon] = useState<PoketmonDetailType | null>(null);
-
+  const type = useSelector((state: RootState) => state.imageType.type);
   useEffect(() => {
     if (!name) {
       return;
@@ -87,10 +88,7 @@ export default function PoketmonDetail() {
   return (
     <Container>
       <ImageContainer>
-        <Image
-          src={poketmon?.images.dreamWorldFront}
-          alt={poketmon?.KoreanName}
-        />
+        <Image src={poketmon?.images[type]} alt={poketmon?.KoreanName} />
       </ImageContainer>
       <Devider />
       <Body>

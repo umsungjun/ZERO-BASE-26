@@ -1,19 +1,35 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { ChangeEvent } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { POKETMON_IMAGE_TYPE } from "../Constants";
+import { RootState, useAppDispatch } from "../Store";
+import { changeImageType, PoketmonImageKeyType } from "../Store/imageTypeSlice";
 
 // 페이지 헤더 컴포넌트
 export default function PageHeader() {
+  const type = useSelector((state: RootState) => state.imageType.type);
+  const dispatch = useAppDispatch();
+
+  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    console.log(type);
+    dispatch(
+      changeImageType({
+        type: e.target.value as PoketmonImageKeyType,
+      })
+    );
+  };
+
   return (
     <Header>
       <Title>
         <Link to="/">Pokémon</Link>{" "}
         {/* Link component는 랜더되면 a태그로 변함 */}
       </Title>
-      <Select>
-        <option value="Official">Official</option>
-        <option value="A">A</option>
-        <option value="B">B</option>
+      <Select value={type} onChange={handleChange}>
+        <option value={POKETMON_IMAGE_TYPE.OFFICIAL_ARTWORK}>Official</option>
+        <option value={POKETMON_IMAGE_TYPE.DREAM_WORLD}>DreamWorld</option>
+        <option value={POKETMON_IMAGE_TYPE.FROND_DEFAULT}>FrontDefault</option>
       </Select>
     </Header>
   );
