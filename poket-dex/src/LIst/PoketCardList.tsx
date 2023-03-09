@@ -14,7 +14,7 @@ export default function PoketCardList() {
     next: "",
     results: [],
   });
-  console.log(poketmons);
+
   useEffect(() => {
     // component가 mount됐을 때 실행
     (async () => {

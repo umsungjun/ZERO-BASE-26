@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 interface PoketNameChipProps {
   name: string;
   id: number; //포켓몬 number
+  color: string;
 }
 
 // poket몬 카드의 내용 component
@@ -27,7 +28,7 @@ export default function PoketNameChip(props: PoketNameChipProps) {
 
   return (
     <Chip>
-      <NumberChip>
+      <NumberChip color={props.color}>
         <Number>{renderNumber(props.id)}</Number>
       </NumberChip>
       <Text>{props.name}</Text>
@@ -45,9 +46,10 @@ const Chip = styled.div`
   font-size: 16px;
 `;
 
-const NumberChip = styled.div`
+const NumberChip = styled.div<{ color: string }>`
+  //emotion에서 props값을 전달 받을 때 타입을 써야 함
   padding: 4px 6px;
-  background-color: yellow;
+  background-color: ${(props) => props.color};
   border-radius: 16px;
   opcity: 0.8;
 `;
