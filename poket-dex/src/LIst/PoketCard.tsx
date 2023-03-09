@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import PoketNameChip from "../Common/PoketNameChip";
 import PoketMarkChip from "../Common/PoketMarkChip";
-import { RootState } from "../Store";
-import {
-  fetchPoketmonDetail,
-  PoketmonDetailType,
-} from "../Service/poketmonService";
+import { RootState, useAppDispatch } from "../Store";
+
 import { PoketmonImageSkeleton } from "../Common/PoketmonImageSkeleton";
 import { useIntersectionObserver } from "react-intersection-observer-hook";
+import { fetchPoketmonDetail } from "../Store/poketmonDetailSlice";
 
 interface PoketCardProps {
   name: string;
@@ -19,27 +17,26 @@ interface PoketCardProps {
 // list의 card component
 export default function PoketCard(props: PoketCardProps) {
   const navigate = useNavigate();
-
+  const dispatch = useAppDispatch();
+  const { poketmonDetails } = useSelector(
+    (state: RootState) => state.poketmonDetail
+  );
+  const poketmon = poketmonDetails[props.name];
   const [ref, { entry }] = useIntersectionObserver();
   const isVisible = entry && entry.isIntersecting;
 
-  const [poketmon, setPoketmon] = useState<PoketmonDetailType | null>(null);
   const type = useSelector((state: RootState) => state.imageType.type);
   const handleClick = () => {
     navigate(`/poketmon/${props.name}`); //navigate를 props.name으로 한다.
   };
-  console.log(poketmon);
-  console.log(type);
+  // console.log(poketmon);
+  // console.log(type);
   useEffect(() => {
     if (!isVisible) {
       return;
     }
-
-    (async () => {
-      const detail = await fetchPoketmonDetail(props.name);
-      setPoketmon(detail);
-    })();
-  }, [props.name, isVisible]);
+    dispatch(fetchPoketmonDetail(props.name));
+  }, [props.name, isVisible, dispatch]);
 
   if (!poketmon) {
     // 로딩중에 잠깐 나올 화면

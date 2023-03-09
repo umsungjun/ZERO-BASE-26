@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import styled from "@emotion/styled";
-import { RootState } from "../Store";
+import { RootState, useAppDispatch } from "../Store";
 import PoketMarkChip from "../Common/PoketMarkChip";
-import {
-  fetchPoketmonDetail,
-  PoketmonDetailType,
-} from "../Service/poketmonService";
 import { PoketmonImageSkeleton } from "../Common/PoketmonImageSkeleton";
+import { fetchPoketmonDetail } from "../Store/poketmonDetailSlice";
 
 // 포켓몬 상세 페이지
 export default function PoketmonDetail() {
   const { name } = useParams(); //page navigator 지정된 명칭 path="/poketmon/:name"
-  const [poketmon, setPoketmon] = useState<PoketmonDetailType | null>(null);
+  const { poketmonDetails } = useSelector(
+    (state: RootState) => state.poketmonDetail
+  );
+  const poketmon = name ? poketmonDetails[name] : null;
+  const dispatch = useAppDispatch();
+
   const type = useSelector((state: RootState) => state.imageType.type);
   useEffect(() => {
     if (!name) {
       return;
     }
-    (async () => {
-      const detail = await fetchPoketmonDetail(name);
-      setPoketmon(detail);
-    })();
-  }, [name]);
+    dispatch(fetchPoketmonDetail(name));
+  }, [dispatch, name]);
 
   if (!name || !poketmon) {
     return (

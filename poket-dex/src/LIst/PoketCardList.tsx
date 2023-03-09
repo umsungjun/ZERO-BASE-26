@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from "react";
-
+import { useSelector } from "react-redux";
 import styled from "@emotion/styled";
 import PoketCard from "./PoketCard";
 import {
-  fetchPoketmons,
+  fetchPoketmonsAPI,
   PoketmonListResponseType,
 } from "../Service/poketmonService";
 import useInfiniteScroll from "react-infinite-scroll-hook";
+import { RootState, useAppDispatch } from "../Store";
+import { fetchPoketmons } from "../Store/poketmonsSlice";
 
 // poketmon card list container component
 export default function PoketCardList() {
-  const [poketmons, setPoketmons] = useState<PoketmonListResponseType>({
-    count: 0,
-    next: "",
-    results: [],
-  });
+  const dispatch = useAppDispatch();
+  const { poketmons } = useSelector((state: RootState) => state.poketmons);
 
   const [infinityRef] = useInfiniteScroll({
     loading: false,
@@ -22,11 +21,7 @@ export default function PoketCardList() {
     onLoadMore: async () => {
       // infinity스크롤이 바닥에 닿았을 때 호출 되는 함수
       // console.log("닿음");
-      const morePoketmons = await fetchPoketmons(poketmons.next);
-      setPoketmons({
-        ...morePoketmons, //기존에 있던 count와 next는 유지하되
-        results: [...poketmons.results, ...morePoketmons.results],
-      });
+      dispatch(fetchPoketmons(poketmons.next));
     },
     disabled: false,
     // `rootMargin` is passed to `IntersectionObserver`.
@@ -37,12 +32,9 @@ export default function PoketCardList() {
 
   useEffect(() => {
     // component가 mount됐을 때 실행
-    (async () => {
-      // 비동기 함수를 실행해서
-      const poketmons = await fetchPoketmons(); //result에 비동기로 받아온 result.data를 result에 할당
-      setPoketmons(poketmons);
-    })();
-  }, []);
+
+    dispatch(fetchPoketmons());
+  }, [dispatch]);
 
   return (
     <>

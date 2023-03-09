@@ -12,7 +12,7 @@ export interface PoketmonListResponseType {
 }
 
 // 포켓몬의 영어 이름을 불러옴
-export const fetchPoketmons = async (nextURL?: string) => {
+export const fetchPoketmonsAPI = async (nextURL?: string) => {
   // nextURL이 없을 수 잇으니까 nextURL뒤에 옵셔널 체이닝
   const requestUrl = nextURL ? nextURL : "https://pokeapi.co/api/v2/pokemon";
 
@@ -85,7 +85,7 @@ export interface PoketmonDetailType {
   }[];
 }
 
-export const fetchPoketmonDetail = async (
+export const fetchPoketmonDetailAPI = async (
   name: string
 ): Promise<PoketmonDetailType> => {
   const poketmonDetailUrl = `https://pokeapi.co/api/v2/pokemon/${name}`;
