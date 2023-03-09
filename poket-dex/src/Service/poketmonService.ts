@@ -12,11 +12,12 @@ export interface PoketmonListResponseType {
 }
 
 // 포켓몬의 영어 이름을 불러옴
-export const fetchPoketmons = async () => {
-  const defaultUrl = "https://pokeapi.co/api/v2/pokemon";
+export const fetchPoketmons = async (nextURL?: string) => {
+  // nextURL이 없을 수 잇으니까 nextURL뒤에 옵셔널 체이닝
+  const requestUrl = nextURL ? nextURL : "https://pokeapi.co/api/v2/pokemon";
 
   // post, get, put, delete
-  const response = await remote.get<PoketmonListResponseType>(defaultUrl);
+  const response = await remote.get<PoketmonListResponseType>(requestUrl);
 
   return response.data;
 };
