@@ -93,6 +93,46 @@ export default function PoketmonDetail() {
         />
       </ImageContainer>
       <Devider />
+      <Body>
+        <h2>기본정보</h2>
+        <Table>
+          <tbody>
+            <TableRow>
+              <TableHeader>번호</TableHeader>
+              <td>{poketmon?.id}</td>
+            </TableRow>
+            <TableRow>
+              <TableHeader>이름</TableHeader>
+              <td>{`${poketmon?.KoreanName} (${poketmon?.name})`}</td>
+            </TableRow>
+            <TableRow>
+              <TableHeader>타입</TableHeader>
+              <td>{`${poketmon?.types.toString()}`}</td>
+            </TableRow>
+            <TableRow>
+              <TableHeader>키</TableHeader>
+              <td>{poketmon?.height} m</td>
+            </TableRow>
+            <TableRow>
+              <TableHeader>몸무게</TableHeader>
+              <td>{poketmon?.weigth}</td>
+            </TableRow>
+          </tbody>
+        </Table>
+        <h2>능력치</h2>
+        <Table>
+          <tbody>
+            {poketmon?.baseStats.map((stat) => {
+              return (
+                <TableRow key={stat.name}>
+                  <TableHeader>{stat.name}</TableHeader>
+                  <td>{stat.value}</td>
+                </TableRow>
+              );
+            })}
+          </tbody>
+        </Table>
+      </Body>
       <Footer>
         <PoketMarkChip />
       </Footer>
@@ -105,6 +145,7 @@ const Container = styled.section`
   margin: 16px 32px;
   border-radius: 16px;
   box-shadow: 1px 1px 3px 1px;
+  min-height: 1000px;
 `;
 
 const ImageContainer = styled.section`
@@ -113,7 +154,6 @@ const ImageContainer = styled.section`
   justify-content: center;
   align-items: center;
   margin: 8px 0px;
-  min-height: 350px;
 `;
 
 const Image = styled.img`
