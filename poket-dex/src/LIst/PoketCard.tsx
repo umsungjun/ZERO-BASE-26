@@ -9,6 +9,7 @@ import {
   PoketmonDetailType,
 } from "../Service/poketmonService";
 import { PoketmonImageSkeleton } from "../Common/PoketmonImageSkeleton";
+import { useIntersectionObserver } from "react-intersection-observer-hook";
 
 interface PoketCardProps {
   name: string;
@@ -17,6 +18,9 @@ interface PoketCardProps {
 // list의 card component
 export default function PoketCard(props: PoketCardProps) {
   const navigate = useNavigate();
+  const [ref, { entry }] = useIntersectionObserver();
+  const isVisible = entry && entry.isIntersecting;
+
   const [poketmon, setPoketmon] = useState<PoketmonDetailType | null>(null);
 
   const handleClick = () => {
@@ -24,17 +28,21 @@ export default function PoketCard(props: PoketCardProps) {
   };
 
   useEffect(() => {
+    if (!isVisible) {
+      return;
+    }
+
     (async () => {
       const detail = await fetchPoketmonDetail(props.name);
       setPoketmon(detail);
     })();
-  }, [props.name]);
+  }, [props.name, isVisible]);
 
   if (!poketmon) {
     // 로딩중에 잠깐 나올 화면
     // poketmon은 비동기 통신으로 값을 가져오는 것이기 때문에 null일 경우 예외처리를 해줘야 함
     return (
-      <Item color={"#fff"}>
+      <Item color={"#fff"} ref={ref}>
         <Header>
           <PoketNameChip name={"포켓몬"} color={"#f5d804"} id={0} />
         </Header>
@@ -48,7 +56,7 @@ export default function PoketCard(props: PoketCardProps) {
     );
   }
   return (
-    <Item onClick={handleClick} color={poketmon.color}>
+    <Item onClick={handleClick} color={poketmon.color} ref={ref}>
       {/* 카드를 클릭하면 */}
       <Header>
         <PoketNameChip
